@@ -28,43 +28,66 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-sm w-full max-w-sm"
-      >
-        <h2 className="text-lg font-semibold mb-1 text-gray-800">
-          {role === "owner" ? "Owner Login" : "Student Login"}
-        </h2>
-        <p className="text-xs text-gray-400 mb-4">
-          <Link to="/" className="underline">Not a {role}? Go back</Link>
-        </p>
-        <input
-          type="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-          className="w-full border border-gray-200 rounded px-3 py-2 text-sm mb-3"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-          className="w-full border border-gray-200 rounded px-3 py-2 text-sm mb-3"
-        />
-        {error && <p className="text-xs text-red-600 mb-2">{error}</p>}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-gray-800 text-white py-2 rounded text-sm hover:bg-gray-900 disabled:opacity-50"
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
-        <p className="text-xs text-gray-500 mt-3 text-center">
-          No account? <Link to={`/signup?role=${role}`} className="text-gray-800 underline">Sign up</Link>
-        </p>
-      </form>
+    <div className="min-h-screen flex">
+      <div className="hidden lg:flex lg:w-1/2 bg-primary flex-col justify-between p-12">
+        <p className="font-display text-2xl text-paper">PG Finder</p>
+        <div>
+          <p className="font-display text-3xl text-paper leading-snug mb-4">
+            {role === "owner"
+              ? "List your rooms. Meet real students."
+              : "Find a room you'll actually want to live in."}
+          </p>
+          <p className="text-paper/70 text-sm max-w-sm">
+            Near Christ University, Bangalore — verified visits, no middlemen.
+          </p>
+        </div>
+        <p className="text-paper/50 text-xs">© 2026 PG Finder</p>
+      </div>
+
+      <div className="flex-1 flex items-center justify-center bg-paper px-6 py-16">
+        <div className="w-full max-w-sm">
+          <Link to="/" className="inline-flex items-center gap-1 text-sm text-ink/60 hover:text-ink mb-8">
+            ← Back
+          </Link>
+          <p className="font-display text-2xl text-ink mb-1">
+            {role === "owner" ? "Owner login" : "Student login"}
+          </p>
+          <p className="text-sm text-ink/50 mb-8">Welcome back — enter your details.</p>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div>
+              <label className="block text-xs font-medium text-ink/70 mb-1">Email</label>
+              <input
+                type="email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                className="w-full border border-line rounded-md px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-ink/70 mb-1">Password</label>
+              <input
+                type="password"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                className="w-full border border-line rounded-md px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+              />
+            </div>
+            {error && <p className="text-xs text-red-600">{error}</p>}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-primary text-white py-2.5 rounded-md text-sm font-medium hover:bg-primary-dark disabled:opacity-50 mt-2"
+            >
+              {loading ? "Logging in..." : "Log in"}
+            </button>
+          </form>
+
+          <p className="text-sm text-ink/50 mt-6 text-center">
+            No account? <Link to={`/signup?role=${role}`} className="text-primary font-medium hover:underline">Sign up</Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

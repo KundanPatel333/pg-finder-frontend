@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import imageCompression from "browser-image-compression";
 import api from "../api/axios";
 import Navbar from "../components/Navbar";
@@ -23,15 +23,15 @@ const CreateListing = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleImageSelect = async (e) => {
-    const files = Array.from(e.target.files).slice(0, 5); // max 5
+    const files = Array.from(e.target.files).slice(0, 5);
     setCompressing(true);
     setError("");
     try {
       const compressedFiles = await Promise.all(
         files.map((file) =>
           imageCompression(file, {
-            maxSizeMB: 1, // target max 1MB per image
-            maxWidthOrHeight: 1600, // good enough for web display
+            maxSizeMB: 1,
+            maxWidthOrHeight: 1600,
             useWebWorker: true,
           })
         )
@@ -85,81 +85,95 @@ const CreateListing = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-paper">
       <Navbar />
       <div className="max-w-md mx-auto px-6 py-8">
-        <h1 className="text-lg font-semibold text-gray-800 mb-4">Add a new PG</h1>
-        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-sm">
-          <input
-            name="name"
-            placeholder="PG name"
-            value={form.name}
-            onChange={handleChange}
-            className="w-full border border-gray-200 rounded px-3 py-2 text-sm mb-3"
-          />
-          <input
-            name="address"
-            placeholder="Address"
-            value={form.address}
-            onChange={handleChange}
-            className="w-full border border-gray-200 rounded px-3 py-2 text-sm mb-3"
-          />
-          <div className="flex gap-2 mb-3">
+        <Link to="/dashboard" className="inline-flex items-center gap-1 text-sm text-ink/60 hover:text-ink mb-4">
+          ← Back to dashboard
+        </Link>
+        <p className="font-display text-2xl text-ink mb-6">Add a new PG</p>
+
+        <form onSubmit={handleSubmit} className="bg-white border border-line rounded-lg p-6 flex flex-col gap-4">
+          <div>
+            <label className="block text-xs font-medium text-ink/70 mb-1">PG name</label>
             <input
-              name="min"
-              type="number"
-              placeholder="Min price"
-              value={form.min}
+              name="name"
+              value={form.name}
               onChange={handleChange}
-              className="w-1/2 border border-gray-200 rounded px-3 py-2 text-sm"
-            />
-            <input
-              name="max"
-              type="number"
-              placeholder="Max price"
-              value={form.max}
-              onChange={handleChange}
-              className="w-1/2 border border-gray-200 rounded px-3 py-2 text-sm"
+              className="w-full border border-line rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
             />
           </div>
-          <input
-            name="facilities"
-            placeholder="Facilities (comma separated: WiFi, Food, AC)"
-            value={form.facilities}
-            onChange={handleChange}
-            className="w-full border border-gray-200 rounded px-3 py-2 text-sm mb-3"
-          />
 
-          <label className="block text-sm text-gray-700 mb-1">Photos (up to 5)</label>
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleImageSelect}
-            className="w-full text-sm mb-1"
-          />
-          {compressing && (
-            <p className="text-xs text-gray-400 mb-2">Optimizing images...</p>
-          )}
+          <div>
+            <label className="block text-xs font-medium text-ink/70 mb-1">Address</label>
+            <input
+              name="address"
+              value={form.address}
+              onChange={handleChange}
+              className="w-full border border-line rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+            />
+          </div>
+
+          <div className="flex gap-3">
+            <div className="w-1/2">
+              <label className="block text-xs font-medium text-ink/70 mb-1">Min price</label>
+              <input
+                name="min"
+                type="number"
+                value={form.min}
+                onChange={handleChange}
+                className="w-full border border-line rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+              />
+            </div>
+            <div className="w-1/2">
+              <label className="block text-xs font-medium text-ink/70 mb-1">Max price</label>
+              <input
+                name="max"
+                type="number"
+                value={form.max}
+                onChange={handleChange}
+                className="w-full border border-line rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-ink/70 mb-1">Facilities</label>
+            <input
+              name="facilities"
+              placeholder="WiFi, Food, AC"
+              value={form.facilities}
+              onChange={handleChange}
+              className="w-full border border-line rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-ink/70 mb-1">Photos (up to 5)</label>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageSelect}
+              className="w-full text-sm"
+            />
+            {compressing && <p className="text-xs text-ink/40 mt-1">Optimizing images...</p>}
+          </div>
 
           {preview.length > 0 && !compressing && (
-            <div className="grid grid-cols-3 gap-2 mb-3 mt-2">
+            <div className="grid grid-cols-3 gap-2">
               {preview.map((src, i) => (
-                <img
-                  key={i}
-                  src={src}
-                  alt={`preview-${i}`}
-                  className="w-full h-20 object-cover rounded"
-                />
+                <img key={i} src={src} alt={`preview-${i}`} className="w-full h-20 object-cover rounded" />
               ))}
             </div>
           )}
 
-          {error && <p className="text-xs text-red-600 mb-2">{error}</p>}
+          {error && <p className="text-xs text-red-600">{error}</p>}
+
           <button
             type="submit"
             disabled={loading || compressing}
-            className="w-full bg-gray-800 text-white py-2 rounded text-sm hover:bg-gray-900 disabled:opacity-50"
+            className="w-full bg-primary text-white py-2.5 rounded-md text-sm font-medium hover:bg-primary-dark disabled:opacity-50"
           >
             {loading ? "Creating..." : "Create listing"}
           </button>

@@ -49,30 +49,24 @@ const Browse = () => {
     setSearch("");
   };
 
-  // client-side name/address search on top of server-filtered results
   const filteredListings = listings.filter((pg) => {
     const q = search.toLowerCase();
-    return (
-      pg.name?.toLowerCase().includes(q) || pg.address?.toLowerCase().includes(q)
-    );
+    return pg.name?.toLowerCase().includes(q) || pg.address?.toLowerCase().includes(q);
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-paper">
       <Navbar />
-      <div className="max-w-4xl mx-auto px-6 py-6">
-        <h1 className="text-lg font-semibold text-gray-800 mb-4">
-          PGs near Christ University
-        </h1>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
+        <p className="font-display text-2xl text-ink mb-6">PGs near Christ University</p>
 
-        {/* Filter panel */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-5">
+        <div className="bg-white border border-line rounded-lg p-4 mb-6">
           <input
             type="text"
             placeholder="Search by name or area..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full border border-gray-200 rounded px-3 py-2 text-sm mb-3"
+            className="w-full border border-line rounded-md px-3 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           />
 
           <div className="flex gap-2 mb-3">
@@ -81,14 +75,14 @@ const Browse = () => {
               placeholder="Min price"
               value={minPrice}
               onChange={(e) => setMinPrice(e.target.value)}
-              className="w-1/2 border border-gray-200 rounded px-3 py-2 text-sm"
+              className="w-1/2 border border-line rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
             />
             <input
               type="number"
               placeholder="Max price"
               value={maxPrice}
               onChange={(e) => setMaxPrice(e.target.value)}
-              className="w-1/2 border border-gray-200 rounded px-3 py-2 text-sm"
+              className="w-1/2 border border-line rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
             />
           </div>
 
@@ -100,8 +94,8 @@ const Browse = () => {
                 onClick={() => toggleFacility(facility)}
                 className={`text-xs px-3 py-1.5 rounded-full border ${
                   selectedFacilities.includes(facility)
-                    ? "bg-gray-800 text-white border-gray-800"
-                    : "border-gray-200 text-gray-600"
+                    ? "bg-primary text-white border-primary"
+                    : "border-line text-ink/60"
                 }`}
               >
                 {facility}
@@ -112,7 +106,7 @@ const Browse = () => {
           <div className="flex gap-2">
             <button
               onClick={fetchListings}
-              className="bg-gray-800 text-white text-sm px-4 py-2 rounded hover:bg-gray-900"
+              className="bg-primary text-white text-sm px-4 py-2 rounded-md hover:bg-primary-dark"
             >
               Apply filters
             </button>
@@ -121,23 +115,21 @@ const Browse = () => {
                 clearFilters();
                 fetchListings();
               }}
-              className="text-sm text-gray-500 px-4 py-2 hover:text-gray-700"
+              className="text-sm text-ink/50 px-4 py-2 hover:text-ink"
             >
               Clear
             </button>
           </div>
         </div>
 
-        {loading && <p className="text-sm text-gray-500">Loading...</p>}
+        {loading && <p className="text-sm text-ink/50">Loading...</p>}
         {!loading && filteredListings.length === 0 && (
-          <p className="text-sm text-gray-500">No PGs match your filters.</p>
+          <p className="text-sm text-ink/50">No PGs match your filters.</p>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {filteredListings.map((pg) => (
-            <Link key={pg._id} to={`/pg/${pg._id}`}>
-              <PGCard pg={pg} />
-            </Link>
+            <PGCard key={pg._id} pg={pg} linkTo={`/pg/${pg._id}`} />
           ))}
         </div>
       </div>

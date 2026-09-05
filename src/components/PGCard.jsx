@@ -2,22 +2,24 @@ import { Link } from "react-router-dom";
 
 const PGCard = ({ pg, linkTo }) => {
   const card = (
-    <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-100 hover:shadow-md transition">
-      {pg.images?.[0] && (
-        <img
-          src={pg.images[0]}
-          alt={pg.name}
-          className="w-full h-40 object-cover rounded-md mb-3"
-        />
-      )}
-      <h3 className="font-medium text-gray-800">{pg.name}</h3>
-      <p className="text-sm text-gray-500 mb-2">{pg.address}</p>
-      <p className="text-sm text-gray-700">
-        ₹{pg.priceRange?.min} - ₹{pg.priceRange?.max}
-      </p>
-      <p className="text-xs text-gray-400 mt-2">
-        {pg.interestedCount || 0} students interested
-      </p>
+    <div>
+      <div className="relative overflow-hidden bg-line/30 aspect-[4/3]">
+        {pg.images?.[0] ? (
+          <img src={pg.images[0]} alt={pg.name} className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-ink/30 font-display text-sm">
+            No photo yet
+          </div>
+        )}
+        <span className="absolute top-3 left-3 bg-paper text-ink text-xs font-medium px-2 py-1">
+          ₹{pg.priceRange?.min} – ₹{pg.priceRange?.max}
+        </span>
+      </div>
+      <div className="pt-3">
+        <p className="font-display text-lg text-ink leading-snug">{pg.name}</p>
+        <p className="text-sm text-ink/60">{pg.address}</p>
+        <p className="text-xs text-ink/40 mt-1">{pg.interestedCount || 0} students interested</p>
+      </div>
     </div>
   );
 

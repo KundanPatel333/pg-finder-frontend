@@ -24,9 +24,9 @@ const PGOwnerDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-paper">
         <Navbar />
-        <p className="text-sm text-gray-500 px-6 py-6">Loading...</p>
+        <p className="text-sm text-ink/50 px-6 py-6">Loading...</p>
       </div>
     );
   }
@@ -34,39 +34,30 @@ const PGOwnerDetail = () => {
   if (!pg) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-paper">
       <Navbar />
       <div className="max-w-2xl mx-auto px-6 py-6">
-        <Link to="/dashboard" className="text-xs text-gray-500 underline">
+        <Link to="/dashboard" className="inline-flex items-center gap-1 text-sm text-ink/60 hover:text-ink mb-4">
           ← Back to dashboard
         </Link>
 
         {pg.images?.length > 0 && (
-          <div className="grid grid-cols-2 gap-2 my-4">
+          <div className="grid grid-cols-2 gap-2 mb-4">
             {pg.images.map((url, i) => (
-              <img
-                key={i}
-                src={url}
-                alt={`${pg.name}-${i}`}
-                className="w-full h-40 object-cover rounded-lg"
-              />
+              <img key={i} src={url} alt={`${pg.name}-${i}`} className="w-full h-40 object-cover rounded-lg" />
             ))}
           </div>
         )}
 
-        <h1 className="text-xl font-semibold text-gray-800 mt-2">{pg.name}</h1>
-        <p className="text-sm text-gray-500 mb-2">{pg.address}</p>
-        <p className="text-sm text-gray-700 mb-2">
-          ₹{pg.priceRange?.min} - ₹{pg.priceRange?.max}
-        </p>
+        <p className="font-display text-2xl text-ink mt-2">{pg.name}</p>
+        <p className="text-sm text-ink/50 mb-2">{pg.address}</p>
+        <p className="text-sm text-ink mb-2">₹{pg.priceRange?.min} - ₹{pg.priceRange?.max}</p>
         <div className="flex flex-wrap gap-2 mb-4">
           {pg.facilities?.map((f) => (
-            <span key={f} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-              {f}
-            </span>
+            <span key={f} className="text-xs bg-line/40 text-ink/70 px-2 py-1 rounded">{f}</span>
           ))}
         </div>
-        <p className="text-xs text-gray-400">{pg.interestedCount || 0} students interested</p>
+        <p className="text-xs text-ink/40">{pg.interestedCount || 0} students interested</p>
       </div>
     </div>
   );
